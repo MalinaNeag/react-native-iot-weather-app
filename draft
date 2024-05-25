@@ -59,7 +59,7 @@ export default function HomeScreen() {
       if (data.current?.co_detected) {
         Alert.alert("Danger Alert", "Carbon Monoxide detected! Possible fire hazard. Please take immediate action.");
       }
-      if (!data.current?.vibration_detected) {
+      if (data.current?.vibration_detected) {
         Alert.alert("Danger Alert", "Vibration detected! Possible earthquake. Please take immediate action.");
       }
     });
@@ -71,23 +71,15 @@ export default function HomeScreen() {
 
   const formattedTemp = (temp) => temp ? temp.toFixed(1) : 'N/A';
 
-  const getLightStatus = () => {
-       if (!current) return 'No light detected';
-       const isDay = current.is_day === 1;
-       if (isDay && current.light_detected) return 'Light detected';
-       if (!isDay && current.light_detected) return 'Artificial light detected';
-       return 'No light detected';
-     };
-
   return (
     <View className="flex-1 relative">
       <StatusBar style="light" />
-      <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', position: 'absolute', width: '100%', height: '100%' }} />
       <Image
         blurRadius={70}
         source={require('../assets/images/bg.png')}
-        className="absolute w-full h-full"
+        style={{ position: 'absolute', width: '100%', height: '100%', tintColor: 'black' }}
       />
+      <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', position: 'absolute', width: '100%', height: '100%' }} />
       {
         loading ? (
           <View className="flex-1 flex-row justify-center items-center">
@@ -176,17 +168,17 @@ export default function HomeScreen() {
               </ScrollView>
             </View>
             <View className="px-5 py-1 mt-4 mx-5 space-y-1">
-              <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.co_detected ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 128, 0, 0.3)' }}>
+              <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: theme.bgWhite(0.15) }}>
                 <Text className="text-white text-sm font-semibold">Carbon Monoxide Alert</Text>
                 <Text className="text-xs text-white">{current?.co_detected ? 'Detected' : 'Not Detected'}</Text>
               </View>
-              <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.vibration_detected ? 'rgba(0, 128, 0, 0.3)' : 'rgba(255, 0, 0, 0.3)' }}>
+              <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: theme.bgWhite(0.15) }}>
                 <Text className="text-white text-sm font-semibold">Earthquake Alert</Text>
-                <Text className="text-xs text-white">{current?.vibration_detected ? 'Not Detected' : 'Detected'}</Text>
+                <Text className="text-xs text-white">{current?.vibration_detected ? 'Detected' : 'Not Detected'}</Text>
               </View>
-              <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.light_detected ? 'rgba(0, 128, 0, 0.3)' : 'rgba(128, 128, 128, 0.3)' }}>
+              <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: theme.bgWhite(0.15) }}>
                 <Text className="text-white text-sm font-semibold">Light Detection</Text>
-                <Text className="text-xs text-white">{getLightStatus()}</Text>
+                <Text className="text-xs text-white">{current?.light_detected ? 'Detected' : 'Not Detected'}</Text>
               </View>
             </View>
           </SafeAreaView>
