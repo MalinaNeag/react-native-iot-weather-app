@@ -1,4 +1,3 @@
-// screens/HomeScreen.js
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -57,10 +56,10 @@ export default function HomeScreen() {
       setLoading(false);
 
       // Trigger notifications for dangerous conditions
-      if (data.current.co_detected) {
+      if (data.current?.co_detected) {
         Alert.alert("Danger Alert", "Carbon Monoxide detected! Possible fire hazard. Please take immediate action.");
       }
-      if (data.current.vibration_detected) {
+      if (!data.current?.vibration_detected) {
         Alert.alert("Danger Alert", "Vibration detected! Possible earthquake. Please take immediate action.");
       }
     });
@@ -69,6 +68,8 @@ export default function HomeScreen() {
   const handleTextDebounce = useCallback(debounce(handleSearch, 1200), []);
 
   const { location, current } = weather;
+
+  const formattedTemp = (temp) => temp ? temp.toFixed(1) : 'N/A';
 
   return (
     <View className="flex-1 relative">
@@ -92,19 +93,19 @@ export default function HomeScreen() {
               </Text>
               <View className="flex-row justify-center">
                 <Image
-                  source={weatherImages[current?.condition?.text || 'other']}
+                  source={weatherImages[current?.condition?.text] || weatherImages['other']}
                   className="w-52 h-52"
                 />
               </View>
               <View className="space-y-2">
                 <Text className="text-center font-bold text-white text-6xl ml-5">
-                  {current?.temp_c}&#176;C
+                  {formattedTemp(current?.temp_c)}&#176;C
                 </Text>
                 <Text className="text-center text-white text-xl tracking-widest">
                   {current?.condition?.text}
                 </Text>
                 <Text className="text-center text-white text-lg">
-                  {current?.temp_f}&#176;F / {current?.temp_k}K / {current?.temp_r}R
+                  <Text className="text-base">{formattedTemp(current?.temp_f)}&#176;F</Text> / <Text className="text-base">{formattedTemp(current?.temp_k)}K</Text> / <Text className="text-base">{formattedTemp(current?.temp_r)}R</Text>
                 </Text>
                 <Text className="text-center text-white text-lg">
                   {current?.date}
@@ -143,6 +144,9 @@ export default function HomeScreen() {
                   let dayName = date.toLocaleDateString('en-US', options);
                   dayName = dayName.split(',')[0];
 
+                  const conditionText = item?.day?.condition?.text || 'other';
+                  const weatherImage = weatherImages[conditionText] || weatherImages['other'];
+
                   return (
                     <View
                       key={index}
@@ -150,12 +154,12 @@ export default function HomeScreen() {
                       style={{ backgroundColor: theme.bgWhite(0.15) }}
                     >
                       <Image
-                        source={weatherImages[item?.day?.condition?.text || 'other']}
+                        source={weatherImage}
                         className="w-11 h-11"
                       />
                       <Text className="text-white">{dayName}</Text>
                       <Text className="text-white text-xl font-semibold">
-                        {item?.day?.avgtemp_c}&#176;
+                        {formattedTemp(item?.day?.avgtemp_c)}&#176;
                       </Text>
                     </View>
                   );
