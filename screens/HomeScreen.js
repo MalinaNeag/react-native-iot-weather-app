@@ -59,7 +59,7 @@ export default function HomeScreen() {
       if (data.current?.co_detected) {
         Alert.alert("Danger Alert", "Carbon Monoxide detected! Possible fire hazard. Please take immediate action.");
       }
-      if (!data.current?.vibration_detected) {
+      if (data.current?.vibration_detected) {
         Alert.alert("Danger Alert", "Vibration detected! Possible earthquake. Please take immediate action.");
       }
     });
@@ -180,9 +180,9 @@ export default function HomeScreen() {
                 <Text className="text-white text-sm font-semibold">Carbon Monoxide Alert</Text>
                 <Text className="text-xs text-white">{current?.co_detected ? 'Detected' : 'Not Detected'}</Text>
               </View>
-              <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.vibration_detected ? 'rgba(0, 128, 0, 0.3)' : 'rgba(255, 0, 0, 0.3)' }}>
+              <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.vibration_detected ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 128, 0, 0.3)' }}>
                 <Text className="text-white text-sm font-semibold">Earthquake Alert</Text>
-                <Text className="text-xs text-white">{current?.vibration_detected ? 'Not Detected' : 'Detected'}</Text>
+                <Text className="text-xs text-white">{current?.vibration_detected ? 'Detected' : 'Not Detected'}</Text>
               </View>
               <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.light_detected ? 'rgba(0, 128, 0, 0.3)' : 'rgba(128, 128, 128, 0.3)' }}>
                 <Text className="text-white text-sm font-semibold">Light Detection</Text>
