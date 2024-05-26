@@ -1,7 +1,7 @@
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MagnifyingGlassIcon, XMarkIcon, CalendarIcon, CloudIcon } from 'react-native-heroicons/outline';
+import { MagnifyingGlassIcon, XMarkIcon, CalendarIcon, CloudIcon, ChevronDoubleDownIcon } from 'react-native-heroicons/outline';
 import { CalendarDaysIcon, MapPinIcon } from 'react-native-heroicons/solid';
 import { debounce } from 'lodash';
 import { theme } from '../theme';
@@ -18,10 +18,11 @@ export default function HomeScreen() {
   const [weather, setWeather] = useState({});
 
   const handleSearch = search => {
-    if (search && search.length > 2)
+    if (search && search.length > 2) {
       fetchLocations({ cityName: search }).then(data => {
         setLocations(data);
       });
+    }
   }
 
   const handleLocation = loc => {
@@ -124,15 +125,15 @@ export default function HomeScreen() {
               </View>
               <View className="flex-row justify-between mx-4">
                 <View className="flex-row space-x-2 items-center">
-                  <Text className="text-white font-semibold text-base">Humidity:</Text>
+                  <Image source={require('../assets/icons/drop.png')} className="w-6 h-6" />
                   <Text className="text-white font-semibold text-base">{current?.humidity}%</Text>
                 </View>
                 <View className="flex-row space-x-2 items-center">
-                  <Text className="text-white font-semibold text-base">Rain:</Text>
+                  <CloudIcon size={20} color="white" />
                   <Text className="text-white font-semibold text-base">{current?.rain_detected ? 'Detected' : 'Not Detected'}</Text>
                 </View>
                 <View className="flex-row space-x-2 items-center">
-                  <Text className="text-white font-semibold text-base">Pressure:</Text>
+                  <ChevronDoubleDownIcon size={20} color="white" />
                   <Text className="text-white font-semibold text-base">
                     {formattedPressure(current?.pressure)} hPa
                   </Text>
