@@ -72,12 +72,14 @@ export default function HomeScreen() {
   const formattedTemp = (temp) => temp ? temp.toFixed(1) : 'N/A';
 
   const getLightStatus = () => {
-       if (!current) return 'No light detected';
-       const isDay = current.is_day === 1;
-       if (isDay && current.light_detected) return 'Light detected';
-       if (!isDay && current.light_detected) return 'Artificial light detected';
-       return 'No light detected';
-     };
+    if (!current) return 'No light detected';
+    const isDay = current.is_day === 1;
+    if (isDay && current.light_detected) return 'Light detected';
+    if (!isDay && current.light_detected) return 'Artificial light detected';
+    return 'No light detected';
+  };
+
+  const formattedPressure = (pressure) => pressure ? pressure.toFixed(1) : 'N/A';
 
   return (
     <View className="flex-1 relative">
@@ -122,17 +124,17 @@ export default function HomeScreen() {
               </View>
               <View className="flex-row justify-between mx-4">
                 <View className="flex-row space-x-2 items-center">
-                  <Image source={require('../assets/icons/wind.png')} className="w-6 h-6" />
-                  <Text className="text-white font-semibold text-base">{current?.wind_kph} km/h</Text>
-                </View>
-                <View className="flex-row space-x-2 items-center">
-                  <Image source={require('../assets/icons/drop.png')} className="w-6 h-6" />
+                  <Text className="text-white font-semibold text-base">Humidity:</Text>
                   <Text className="text-white font-semibold text-base">{current?.humidity}%</Text>
                 </View>
                 <View className="flex-row space-x-2 items-center">
-                  <Image source={require('../assets/icons/sun.png')} className="w-6 h-6" />
+                  <Text className="text-white font-semibold text-base">Rain:</Text>
+                  <Text className="text-white font-semibold text-base">{current?.rain_detected ? 'Detected' : 'Not Detected'}</Text>
+                </View>
+                <View className="flex-row space-x-2 items-center">
+                  <Text className="text-white font-semibold text-base">Pressure:</Text>
                   <Text className="text-white font-semibold text-base">
-                    {weather?.forecast?.forecastday[0]?.astro?.sunrise}
+                    {formattedPressure(current?.pressure)} hPa
                   </Text>
                 </View>
               </View>
@@ -177,12 +179,12 @@ export default function HomeScreen() {
             </View>
             <View className="px-5 py-1 mt-4 mx-5 space-y-1">
               <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.co_detected ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 128, 0, 0.3)' }}>
-                <Text className="text-white text-sm font-semibold">Carbon Monoxide Alert</Text>
-                <Text className="text-xs text-white">{current?.co_detected ? 'Detected' : 'Not Detected'}</Text>
+                <Text className="text-white text-sm font-semibold">Fire Alert</Text>
+                <Text className="text-xs text-white">{current?.co_detected ? 'Carbon Monoxide Detected' : 'No Carbon Monoxide detected'}</Text>
               </View>
               <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.vibration_detected ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 128, 0, 0.3)' }}>
                 <Text className="text-white text-sm font-semibold">Earthquake Alert</Text>
-                <Text className="text-xs text-white">{current?.vibration_detected ? 'Detected' : 'Not Detected'}</Text>
+                <Text className="text-xs text-white">{current?.vibration_detected ? 'Vibration detected' : 'No vibration detected'}</Text>
               </View>
               <View className="flex justify-center items-center w-full rounded-3xl py-1" style={{ backgroundColor: current?.light_detected ? 'rgba(0, 128, 0, 0.3)' : 'rgba(128, 128, 128, 0.3)' }}>
                 <Text className="text-white text-sm font-semibold">Light Detection</Text>

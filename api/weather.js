@@ -1,7 +1,6 @@
-// api/weather.js
 import axios from "axios";
 import { apiKey } from "../constants";
-import { database } from './firebaseConfig'; // Ensure you have firebaseConfig.js correctly set up
+import { database } from './firebaseConfig';
 
 const forecastEndpoint = params => `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${params.cityName}&days=${params.days}`;
 const locationsEndpoint = params => `https://api.weatherapi.com/v1/search.json?key=${apiKey}&q=${params.cityName}`;
@@ -36,6 +35,8 @@ export const fetchWeatherForecast = async params => {
         apiData.current.co_detected = firebaseData.co_detected;
         apiData.current.light_detected = firebaseData.light_detected;
         apiData.current.vibration_detected = firebaseData.vibration_detected;
+        apiData.current.pressure = firebaseData.pressure;
+        apiData.current.rain_detected = firebaseData.rain_detected;
         apiData.current.date = firebaseData.date;
     }
 
